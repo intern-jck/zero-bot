@@ -33,7 +33,7 @@ parser.on('data', (data) => {
 
   if (sentance[0] === 'GGA') {
     gpsData.GGA.data = sentance;
-
+    console.log(data);
   // Need to sort out parsing of the sentance
 /*
     let GGA = gpsData.GGA;
