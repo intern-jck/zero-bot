@@ -1,6 +1,7 @@
 // Bot Control
 const { SerialPort } = require('serialport');
 const { ReadlineParser } = require('@serialport/parser-readline');
+const fs = require('fs');
 const { moveBot } = require('../motors/motors.js');
 const axios = require('axios');
 const express = require('express');
@@ -33,7 +34,8 @@ parser.on('data', (data) => {
 
   if (sentance[0] === 'GGA') {
     gpsData.GGA.data = sentance;
-    console.log(data);
+    // console.log(data);
+    fs.appendFileSync('bot-gps.csv', sentance.join(','));
   // Need to sort out parsing of the sentance
 /*
     let GGA = gpsData.GGA;
@@ -57,6 +59,7 @@ app.get('/bot-gps', (req, res) => {
 app.put('/bot-move', (req, res) => {
   console.log(req.body);
   moveBot(req.body.dir, req.body.spd);
+  fs.appendFileSync('bot-move.csv', `${req.body.dir},${req.body.spd}\r\n`);
   res.sendStatus(200);
 });
 
